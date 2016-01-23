@@ -38,8 +38,6 @@ public class Main {
 
     private void input() {
         Scanner sc = new Scanner(System.in);
-        //System.out.println("Input infix expression");
-        //toPostFix(sc.nextLine());
         System.out.println("Enter the number of variables you want to declare and initialize:");
         int n = Integer.parseInt(sc.nextLine());
         System.out.println("Initialize using <identifier, space, equals sign, space, value>:");
@@ -77,7 +75,7 @@ public class Main {
                 break;
             }
         }
-        System.out.println(sb.toString());
+        //System.out.println(sb.toString());
         if (flag) {
             toPostFix(sb.toString());
         }
@@ -107,7 +105,7 @@ public class Main {
         while (!operator_stack.isEmpty()) {
             postfix.append(operator_stack.pop());
         }
-        System.out.println(postfix);
+        //System.out.println(postfix);
         evaluate(postfix.toString());
     }
 
