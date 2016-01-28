@@ -22,11 +22,13 @@ public class Main {
     private final Map<String, Integer> symbolTable;
     private final ArrayList<Integer> results;
     private final List<String> operators;
+    private final List<String> parenthaList;
 
     public Main() {
         symbolTable = new HashMap<>();
         results = new ArrayList<>();
         operators = Arrays.asList("+", "-", "*", "/");
+        parenthaList = Arrays.asList("(", ")");
     }
 
     /**
@@ -40,7 +42,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the number of variables you want to declare and initialize:");
         int n = Integer.parseInt(sc.nextLine());
-        System.out.println("Initialize using <identifier, space, equals sign, space, value>:");
+        System.out.println("Initialize variables:");
         for (int i = 0; i < n; i++) {
             enterSymbolTable(sc.nextLine());
         }
@@ -50,7 +52,7 @@ public class Main {
         for (int i = 0; i < m; i++) {
             parse(sc.nextLine().replaceAll("\\s", ""));
         }
-        display();
+        display(); // print results
     }
 
     private void enterSymbolTable(String nextLine) {
@@ -69,6 +71,8 @@ public class Main {
                 sb.append(s);
             } else if (operators.contains(s)) {
                 sb.append(s);
+            } else if (parenthaList.contains(s))  {
+                sb.append(s);
             } else {
                 results.add(Integer.MAX_VALUE);
                 flag = false;
@@ -81,7 +85,7 @@ public class Main {
         }
     }
 
-    private void toPostFix(String infix) {
+    private void toPostFix(String infix) { // Convert Infix expression to Postfix
         StringBuilder postfix = new StringBuilder();
         Stack<Character> operator_stack = new Stack<>();
         for (int i = 0; i < infix.length(); i++) {
@@ -105,7 +109,7 @@ public class Main {
         while (!operator_stack.isEmpty()) {
             postfix.append(operator_stack.pop());
         }
-        //System.out.println(postfix);
+        System.out.println(postfix);
         evaluate(postfix.toString());
     }
 
@@ -131,11 +135,11 @@ public class Main {
                 stack.push(symbolTable.get(String.valueOf(ch)));
             } else if (ch == '+') {
                 stack.push(stack.pop() + stack.pop());
-            } else if (ch == '-'){
+            } else if (ch == '-') {
                 int n1 = stack.pop();
                 int n2 = stack.pop();
                 stack.push(n2 - n1);
-            } else if (ch == '*'){
+            } else if (ch == '*') {
                 stack.push(stack.pop() * stack.pop());
             } else {
                 int n1 = stack.pop();
@@ -143,7 +147,7 @@ public class Main {
                 stack.push(n2 / n1);
             }
         }
-        if (stack.isEmpty()){
+        if (stack.isEmpty()) {
             results.add(Integer.MAX_VALUE);
         } else {
             results.add(stack.pop());
@@ -153,10 +157,11 @@ public class Main {
     private void display() {
         System.out.println("Displaying results:");
         results.stream().forEach((r) -> {
-            if (r == Integer.MAX_VALUE)
+            if (r == Integer.MAX_VALUE) {
                 System.out.println("Compilation Error!");
-            else
+            } else {
                 System.out.println(r);
+            }
         });
     }
 
